@@ -1,56 +1,26 @@
-Microsoft COCO Caption Evaluation
-===================
+# StyleNet: Generating Attractive Visual Captions with Styles	# ResNet in TensorFlow
+ StyleNet is a novel framework to address the task of generating attractive captions for images and videos with different styles. Authors proposed a model, which is based on using	Deep residual networks, or ResNets for short, provided the breakthrough idea of identity mappings in order to enable training of very deep convolutional neural networks. This folder contains an implementation of ResNet for the ImageNet dataset written in TensorFlow.
+factorized LSTM.	
+ See the following papers for more background:
+ 
+ ## Description	[1] [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf) by Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun, Dec 2015.
+- Author: Chuang Gan, Zhe Gan, Xiaodong He, Jianfeng Gao, Li Deng	
+- Published in: Computer Vision and Pattern Recognition (CVPR), 2017	[2] [Identity Mappings in Deep Residual Networks](https://arxiv.org/pdf/1603.05027.pdf) by Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun, Jul 2016.
+- URL:  https://www.microsoft.com/en-us/research/wp-content/uploads/2017/06/Generating-Attractive-Visual-Captions-with-Styles.pdf	
+ In code, v1 refers to the ResNet defined in [1] but where a stride 2 is used on
+ 
+## Requires	the 3x3 conv rather than the first 1x1 in the bottleneck. This change results
+- Tensorflow 1.8.0 (lower versions supposed to work too)	in higher and more stable accuracy with less epochs than the original v1 and has
+- python 3	shown to scale to higher batch sizes with minimal degradation in accuracy.
+- numpy	There is no originating paper and the first mention we are aware of was in the
+- tqdm	[torch version of ResNetv1](https://github.com/facebook/fb.resnet.torch). Most
+- opencv-python	popular v1 implementations are this implementation which we call ResNetv1.5. In
+ testing we found v1.5 requires ~12% more compute to train and has 6% reduced
 
-Evaluation codes for MS COCO caption generation.
-
-## Requirements ##
-- java 1.8.0
-- python 2.7
-
-## Files ##
-./
-- cocoEvalCapDemo.py (demo script)
-
-./annotation
-- captions_val2014.json (MS COCO 2014 caption validation set)
-- Visit MS COCO [download](http://mscoco.org/dataset/#download) page for more details.
-
-./results
-- captions_val2014_fakecap_results.json (an example of fake results for running demo)
-- Visit MS COCO [format](http://mscoco.org/dataset/#format) page for more details.
-
-./pycocoevalcap: The folder where all evaluation codes are stored.
-- evals.py: The file includes COCOEavlCap class that can be used to evaluate results on COCO.
-- tokenizer: Python wrapper of Stanford CoreNLP PTBTokenizer
-- bleu: Bleu evalutation codes
-- meteor: Meteor evaluation codes
-- rouge: Rouge-L evaluation codes
-- cider: CIDEr evaluation codes
-- spice: SPICE evaluation codes
-
-## Setup ##
-
-- You will first need to download the [Stanford CoreNLP 3.6.0](http://stanfordnlp.github.io/CoreNLP/index.html) code and models for use by SPICE. To do this, run:
-    ./get_stanford_models.sh
-- Note: SPICE will try to create a cache of parsed sentences in ./pycocoevalcap/spice/cache/. This dramatically speeds up repeated evaluations. The cache directory can be moved by setting 'CACHE_DIR' in ./pycocoevalcap/spice. In the same file, caching can be turned off by removing the '-cache' argument to 'spice_cmd'. 
-
-## References ##
-
-- [Microsoft COCO Captions: Data Collection and Evaluation Server](http://arxiv.org/abs/1504.00325)
-- PTBTokenizer: We use the [Stanford Tokenizer](http://nlp.stanford.edu/software/tokenizer.shtml) which is included in [Stanford CoreNLP 3.4.1](http://nlp.stanford.edu/software/corenlp.shtml).
-- BLEU: [BLEU: a Method for Automatic Evaluation of Machine Translation](http://www.aclweb.org/anthology/P02-1040.pdf)
-- Meteor: [Project page](http://www.cs.cmu.edu/~alavie/METEOR/) with related publications. We use the latest version (1.5) of the [Code](https://github.com/mjdenkowski/meteor). Changes have been made to the source code to properly aggreate the statistics for the entire corpus.
-- Rouge-L: [ROUGE: A Package for Automatic Evaluation of Summaries](http://anthology.aclweb.org/W/W04/W04-1013.pdf)
-- CIDEr: [CIDEr: Consensus-based Image Description Evaluation](http://arxiv.org/pdf/1411.5726.pdf)
-- SPICE: [SPICE: Semantic Propositional Image Caption Evaluation](https://arxiv.org/abs/1607.08822)
-
-## Developers ##
-- Xinlei Chen (CMU)
-- Hao Fang (University of Washington)
-- Tsung-Yi Lin (Cornell)
-- Ramakrishna Vedantam (Virgina Tech)
-
-## Acknowledgement ##
-- David Chiang (University of Norte Dame)
-- Michael Denkowski (CMU)
-- Alexander Rush (Harvard University)
+## Usage	throughput for inference compared to ResNetv1. Comparing the v1 model to the
+- first follow preprocessing notebook for image captions preprocessing	v1.5 model, which has happened in blog posts, is an apples-to-oranges
+- place preprocessed captions into ./pickles folder	comparison especially in regards to hardware or platform performance. CIFAR-10
+- download VGG16 weights from: https://yadi.sk/d/V6Rfzfei3TdKCH	ResNet does not use the bottleneck and is not impacted by these nuances.
+- place downloaded weights to ./utils folder	
+- don't forget to download data and set the path int the parameters -(https://zhegan27.github.io/Papers/FlickrStyle_v0.9.zip)- flickr_style7k	v2 refers to [2]. The principle difference between the two versions is that v1
+- to train launch:
